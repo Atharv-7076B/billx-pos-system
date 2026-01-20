@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     private Long id;
+
 
     @Column(nullable = false)
     private String fullName;
@@ -29,8 +29,11 @@ public class User {
     private String email;
 
     private String password;
-    @Column(nullable = false)
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private UserRole role;
+
     private String phoneNumber;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
