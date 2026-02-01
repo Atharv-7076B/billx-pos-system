@@ -5,7 +5,7 @@ import com.BillX.Payload.dto.UserDto;
 
 public class UserMapper {
 
-    public static UserDto toDTO(User user) {
+    public static User toDTO(User user) {
 
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());

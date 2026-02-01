@@ -31,20 +31,15 @@ public class JwtValidator extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-
         String authHeader = request.getHeader("Authorization");
-
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-
             String token = authHeader.substring(7);
-
             try {
                 Claims claims = Jwts.parserBuilder()
                         .setSigningKey(key)
                         .build()
                         .parseClaimsJws(token)
                         .getBody();
-
                 String email = claims.get("email", String.class);
                 String authorities = claims.get("authorities", String.class);
 
@@ -57,14 +52,11 @@ public class JwtValidator extends OncePerRequestFilter {
                                 null,
                                 grantedAuthorities
                         );
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
             } catch (Exception ex) {
                 throw new BadCredentialsException("Invalid or expired JWT token");
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }

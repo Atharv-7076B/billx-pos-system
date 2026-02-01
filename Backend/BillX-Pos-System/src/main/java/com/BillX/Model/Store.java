@@ -4,9 +4,7 @@ import com.BillX.domain.StoreStatus;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @Setter
@@ -26,6 +24,7 @@ public class Store {
     private String description;
     private String storeType;
     private StoreStatus status;
+    @Embedded
     private  StoreContact storeContact = new StoreContact();
 
     @PrePersist
