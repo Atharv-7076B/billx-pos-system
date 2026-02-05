@@ -6,8 +6,7 @@ import com.BillX.Payload.dto.UserDto;
 public class UserMapper {
 
     public static User toDTO(User user) {
-
-        UserDto userDto = new UserDto();
+        User userDto = new User();
         userDto.setId(user.getId());
         userDto.setFullName(user.getFullName());
         userDto.setEmail(user.getEmail());
@@ -16,7 +15,6 @@ public class UserMapper {
         userDto.setUpdatedAt(user.getUpdatedAt());
         userDto.setLastLogin(user.getLastLogin());
         userDto.setPhoneNumber(user.getPhoneNumber());
-
         return userDto;
     }
 }
