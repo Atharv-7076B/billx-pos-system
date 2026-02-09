@@ -1,10 +1,16 @@
 package com.BillX.Model;
 
 import com.BillX.domain.StoreStatus;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
+
+
 @Entity
 @Getter
 @Setter
@@ -12,28 +18,35 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Store {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(nullable = false)
     private String brand;
+
     @OneToOne
     private User storeAdmin;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String description;
     private String storeType;
     private StoreStatus status;
+
     @Embedded
-    private  StoreContact storeContact = new StoreContact();
+    private StoreContact storeContact = new StoreContact();
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
         status = StoreStatus.PENDING;
     }
-    @PrePersist
-    protected void onUpdate(){
+
+    @PreUpdate
+    protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
 }

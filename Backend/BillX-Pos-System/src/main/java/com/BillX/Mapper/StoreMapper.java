@@ -11,7 +11,7 @@ public class StoreMapper {
         storeDto.setId(store.getId());
         storeDto.setBrand(store.getBrand());
         storeDto.setDescription(store.getDescription());
-        storeDto.setStoreAdmin(UserMapper.toDTO(store.getStoreAdmin()));
+        storeDto.setStoreAdmin(store.getStoreAdmin());
         storeDto.setStoreType(store.getStoreType());
         storeDto.setStoreContact(store.getStoreContact());
         storeDto.setCreatedAt(store.getCreatedAt());
@@ -19,7 +19,7 @@ public class StoreMapper {
         storeDto.setStatus(store.getStatus());
         return storeDto;
     }
-    public Store toEntity(StoreDto storeDto, User storeAdmin){
+    public Store toEntity(StoreDto storeDto, User storeAdmin) {
         Store store = new Store();
         store.setId(storeDto.getId());
         store.setBrand(storeDto.getBrand());

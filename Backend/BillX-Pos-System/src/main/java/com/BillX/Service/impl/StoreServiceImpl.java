@@ -3,6 +3,7 @@ package com.BillX.Service.impl;
 import com.BillX.Exception.UserException;
 import com.BillX.Mapper.StoreMapper;
 import com.BillX.Model.Store;
+import com.BillX.Model.StoreContact;
 import com.BillX.Model.User;
 import com.BillX.Payload.dto.StoreDto;
 import com.BillX.Repository.StoreRepository;
@@ -48,13 +49,33 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreDto updateStore(Long id, StoreDto storeDto) {
-        return null;
+    public StoreDto updateStore(Long id, StoreDto storeDto) throws UserException {
+        User curretUser = userService.getCurrentUsers();
+        Store existingStore = storeRepository.findByAdminId(id);
+        if(existingStore == null){
+            throw new UserException("Store not found...");
+        }
+        existingStore.setBrand(storeDto.getBrand());
+        existingStore.setDescription(storeDto.getDescription());
+        if(storeDto.getStoreType() == null) {
+            existingStore.setStoreType(storeDto.getStoreType());
+        }
+        if(storeDto.getStoreContact()!=null){
+            StoreContact storeContact = StoreContact.builder()
+                    .address(storeDto.getStoreContact().getAddress())
+                    .phoneNo(storeDto.getStoreContact().getPhoneNo())
+                    .email(storeDto.getStoreContact().getEmail())
+                    .build();
+            existingStore.setStoreContact(storeContact);
+        }
+        Store updatedStore = storeRepository.save(existingStore);
+        return StoreMapper.toDto(updatedStore);
     }
 
     @Override
-    public StoreDto deleteStore(Long id) {
-        return null;
+    public void deleteStore(Long id) throws UserException {
+        Store store = getStoreByAdmin();
+        storeRepository.delete(store);
     }
 
     @Override

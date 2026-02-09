@@ -34,11 +34,14 @@ public class User {
     @Column(name = "role", nullable = false)
     private UserRole role;
 
+    @ManyToOne
+    private Store store;
     private String phoneNumber;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime lastLogin;
 
     public Store getStore() {
+        return null;
     }
 }
