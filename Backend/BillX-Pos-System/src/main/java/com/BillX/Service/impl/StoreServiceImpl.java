@@ -9,6 +9,7 @@ import com.BillX.Payload.dto.StoreDto;
 import com.BillX.Repository.StoreRepository;
 import com.BillX.Service.StoreService;
 import com.BillX.Service.UserService;
+import com.BillX.domain.StoreStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -79,11 +80,21 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public StoreDto getStoreByEmployee() throws UserException {
+    public Object getStoreByEmployee() throws UserException {
          User currentUser = userService.getCurrentUsers();
          if (currentUser == null){
              throw new UserException("you don't have permission to acess the store");
          }
          return storeMapper.toDto(currentUser.getStore());
+    }
+
+    @Override
+    public StoreDto moderateStore(Long id, StoreStatus storeStatus) throws Exception {
+        Store store = storeRepository.findById(id).orElseThrow(
+                ()->new Exception("Store not found")
+        );
+        store.setStatus(storeStatus);
+        Store updatedStore = storeRepository.save(store);
+        return storeMapper.toDto(updatedStore);
     }
 }
