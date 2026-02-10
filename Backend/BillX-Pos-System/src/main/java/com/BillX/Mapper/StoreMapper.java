@@ -3,7 +3,9 @@ package com.BillX.Mapper;
 import com.BillX.Model.Store;
 import com.BillX.Model.User;
 import com.BillX.Payload.dto.StoreDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StoreMapper {
 
     public static StoreDto toDto(Store store){

@@ -23,45 +23,47 @@ public class StoreServiceImpl implements StoreService {
     private final StoreRepository storeRepository;
     private final UserService userService;
     private final StoreMapper storeMapper;
+
     @Override
     public StoreDto createStore(StoreDto storeDto, User user) {
-         Store store = storeMapper.toEntity(storeDto,user);
-         return storeMapper.toDto(storeRepository.save(store));
+        Store store = storeMapper.toEntity(storeDto, user);
+        return storeMapper.toDto(storeRepository.save(store));
     }
 
     @Override
     public StoreDto getStoreById(Long id) throws Exception {
-         Store store = storeRepository.findById(id).orElseThrow(
-                 ()->new Exception("Store not found...")
-         );
-         return storeMapper.toDto(store);
+        Store store = storeRepository.findById(id)
+                .orElseThrow(() -> new Exception("Store not found..."));
+        return storeMapper.toDto(store);
     }
 
     @Override
     public List<StoreDto> getAllStores() {
-        List<Store> dtos = storeRepository.findAll();
-        return dtos.stream().map(StoreMapper::toDto).collect(Collectors.toList());
+        return storeRepository.findAll()
+                .stream()
+                .map(StoreMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Store getStoreByAdmin() throws UserException {
         User admin = userService.getCurrentUsers();
-        return storeRepository.findByAdminId(admin.getId());
+        return storeRepository.findByStoreAdmin_Id(admin.getId());
     }
 
     @Override
     public StoreDto updateStore(Long id, StoreDto storeDto) throws UserException {
-        User curretUser = userService.getCurrentUsers();
-        Store existingStore = storeRepository.findByAdminId(id);
-        if(existingStore == null){
+        User currentUser = userService.getCurrentUsers();
+        Store existingStore = storeRepository.findByStoreAdmin_Id(currentUser.getId());
+        if (existingStore == null) {
             throw new UserException("Store not found...");
         }
         existingStore.setBrand(storeDto.getBrand());
         existingStore.setDescription(storeDto.getDescription());
-        if(storeDto.getStoreType() == null) {
+        if (storeDto.getStoreType() != null) {
             existingStore.setStoreType(storeDto.getStoreType());
         }
-        if(storeDto.getStoreContact()!=null){
+        if (storeDto.getStoreContact() != null) {
             StoreContact storeContact = StoreContact.builder()
                     .address(storeDto.getStoreContact().getAddress())
                     .phoneNo(storeDto.getStoreContact().getPhoneNo())
@@ -69,8 +71,7 @@ public class StoreServiceImpl implements StoreService {
                     .build();
             existingStore.setStoreContact(storeContact);
         }
-        Store updatedStore = storeRepository.save(existingStore);
-        return StoreMapper.toDto(updatedStore);
+        return StoreMapper.toDto(storeRepository.save(existingStore));
     }
 
     @Override
@@ -81,20 +82,18 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Object getStoreByEmployee() throws UserException {
-         User currentUser = userService.getCurrentUsers();
-         if (currentUser == null){
-             throw new UserException("you don't have permission to acess the store");
-         }
-         return storeMapper.toDto(currentUser.getStore());
+        User currentUser = userService.getCurrentUsers();
+        if (currentUser == null) {
+            throw new UserException("you don't have permission to acess the store");
+        }
+        return storeMapper.toDto(currentUser.getStore());
     }
 
     @Override
     public StoreDto moderateStore(Long id, StoreStatus storeStatus) throws Exception {
-        Store store = storeRepository.findById(id).orElseThrow(
-                ()->new Exception("Store not found")
-        );
+        Store store = storeRepository.findById(id)
+                .orElseThrow(() -> new Exception("Store not found"));
         store.setStatus(storeStatus);
-        Store updatedStore = storeRepository.save(store);
-        return storeMapper.toDto(updatedStore);
+        return storeMapper.toDto(storeRepository.save(store));
     }
 }

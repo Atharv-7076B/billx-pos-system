@@ -51,7 +51,7 @@ public class StoreController {
     @GetMapping("/employee")
     public ResponseEntity<StoreDto> getStoreByEmployee(@RequestHeader("Authorization") String jwt)
             throws Exception {
-        return ResponseEntity.ok(StoreMapper.toDto(storeService.getStoreByEmployee()));
+        return ResponseEntity.ok(StoreMapper.toDto((Store) storeService.getStoreByEmployee()));
     }
 
     @PutMapping("/{id}")
