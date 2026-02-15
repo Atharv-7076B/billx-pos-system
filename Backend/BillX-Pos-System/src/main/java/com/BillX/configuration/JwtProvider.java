@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,27 +32,12 @@ public class JwtProvider {
         String roles = populateAuthorities(authentication.getAuthorities());
 
         return Jwts.builder()
+                .setSubject(authentication.getName())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .claim("email", authentication.getName())
                 .claim("authorities", roles)
                 .signWith(key)
                 .compact();
-    }
-
-    public String getEmailFromToken(String token) {
-
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.get("email", String.class);
     }
 
     public Claims getClaims(String token) {
@@ -70,7 +54,6 @@ public class JwtProvider {
     }
 
     private String populateAuthorities(Collection<? extends GrantedAuthority> authorities) {
-
         return authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));

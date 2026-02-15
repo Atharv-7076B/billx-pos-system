@@ -8,30 +8,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class StoreMapper {
 
-    public static StoreDto toDto(Store store){
-        StoreDto storeDto = new StoreDto();
-        storeDto.setId(store.getId());
-        storeDto.setBrand(store.getBrand());
-        storeDto.setDescription(store.getDescription());
-        storeDto.setStoreAdmin(store.getStoreAdmin());
-        storeDto.setStoreType(store.getStoreType());
-        storeDto.setStoreContact(store.getStoreContact());
-        storeDto.setCreatedAt(store.getCreatedAt());
-        storeDto.setUpdatedAt(store.getUpdatedAt());
-        storeDto.setStatus(store.getStatus());
-        return storeDto;
-    }
-    public Store toEntity(StoreDto storeDto, User storeAdmin) {
+    public Store toEntity(StoreDto dto, User admin) {
         Store store = new Store();
-        store.setId(storeDto.getId());
-        store.setBrand(storeDto.getBrand());
-        store.setDescription(storeDto.getDescription());
-        store.setStoreAdmin(storeAdmin);
-        store.setStoreType(storeDto.getStoreType());
-        store.setStoreContact(storeDto.getStoreContact());
-        store.setCreatedAt(storeDto.getCreatedAt());
-        store.setUpdatedAt(storeDto.getUpdatedAt());
-        store.setStatus(storeDto.getStatus());
+        store.setBrand(dto.getBrand());
+        store.setDescription(dto.getDescription());
+        store.setStoreType(dto.getStoreType());
+        store.setStoreContact(dto.getStoreContact());
+        store.setStoreAdmin(admin);
         return store;
+    }
+
+    public StoreDto toDto(Store store) {
+        StoreDto dto = new StoreDto();
+        dto.setId(store.getId());
+        dto.setBrand(store.getBrand());
+        dto.setDescription(store.getDescription());
+        dto.setStoreType(store.getStoreType());
+        dto.setStoreContact(store.getStoreContact());
+        dto.setStatus(store.getStatus());
+        dto.setCreatedAt(store.getCreatedAt());
+        dto.setUpdatedAt(store.getUpdatedAt());
+        return dto;
     }
 }

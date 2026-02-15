@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
 @Entity
 @Getter
 @Setter
@@ -20,23 +19,27 @@ import java.time.LocalDateTime;
 public class Store {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
     private String brand;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_admin_id", nullable = false)
     private User storeAdmin;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
     private String description;
     private String storeType;
+
+    @Enumerated(EnumType.STRING)
     private StoreStatus status;
 
     @Embedded
-    private StoreContact storeContact = new StoreContact();
+    private StoreContact storeContact;
 
     @PrePersist
     protected void onCreate() {
