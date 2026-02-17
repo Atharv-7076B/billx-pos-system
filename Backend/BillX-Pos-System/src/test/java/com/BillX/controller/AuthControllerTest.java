@@ -29,7 +29,7 @@ public class AuthControllerTest {
 
     @Test
     public void testSignup_Success() throws Exception {
-        when(authService.signup(any(UserDto.class))).thenReturn(new AuthResponse("jwt-token", "Success"));
+        when(authService.signup(any(UserDto.class))).thenReturn(new AuthResponse("jwt-token", "Success", null));
 
         mockMvc.perform(post("/auth/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -39,7 +39,7 @@ public class AuthControllerTest {
     
     @Test
     public void testLogin_Success() throws Exception {
-        when(authService.login(any(UserDto.class))).thenReturn(new AuthResponse("jwt-token", "Success"));
+        when(authService.login(any(UserDto.class))).thenReturn(new AuthResponse("jwt-token", "Success", null));
 
          mockMvc.perform(post("/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -1,6 +1,7 @@
 package com.BillX.configuration;
 
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +19,7 @@ public class SecurityBeansConfig {
     }
 
     @Bean
-    public SecretKey secretKey() {
-        return Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    public SecretKey secretKey(@Value("${jwt.secret}") String secret) {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 }

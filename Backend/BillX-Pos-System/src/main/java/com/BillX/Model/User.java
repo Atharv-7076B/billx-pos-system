@@ -41,7 +41,4 @@ public class User {
     private LocalDateTime updatedAt;
     private LocalDateTime lastLogin;
 
-    public Store getStore() {
-        return null;
-    }
 }
