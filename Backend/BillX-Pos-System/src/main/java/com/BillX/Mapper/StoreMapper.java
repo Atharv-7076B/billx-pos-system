@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StoreMapper {
 
+
     public Store toEntity(StoreDto dto, User admin) {
         Store store = new Store();
         store.setBrand(dto.getBrand());
@@ -15,6 +16,10 @@ public class StoreMapper {
         store.setStoreType(dto.getStoreType());
         store.setStoreContact(dto.getStoreContact());
         store.setStoreAdmin(admin);
+        
+        // Set bidirectional relationship
+        admin.setStore(store);
+        
         return store;
     }
 
@@ -28,6 +33,11 @@ public class StoreMapper {
         dto.setStatus(store.getStatus());
         dto.setCreatedAt(store.getCreatedAt());
         dto.setUpdatedAt(store.getUpdatedAt());
+
+        if (store.getStoreAdmin() != null) {
+            dto.setStoreAdmin(UserMapper.toDTO(store.getStoreAdmin()));
+        }
+
         return dto;
     }
 }

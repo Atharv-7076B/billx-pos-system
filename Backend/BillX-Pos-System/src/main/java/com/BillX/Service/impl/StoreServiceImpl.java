@@ -10,6 +10,7 @@ import com.BillX.Service.StoreService;
 import com.BillX.Service.UserService;
 import com.BillX.domain.StoreStatus;
 import com.BillX.domain.UserRole;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class StoreServiceImpl implements StoreService {
     private final StoreMapper storeMapper;
 
     @Override
+    @Transactional
     public StoreDto createStore(StoreDto storeDto) throws UserException {
 
         User admin = userService.getCurrentUsers();

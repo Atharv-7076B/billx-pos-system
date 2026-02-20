@@ -1,5 +1,6 @@
 package com.BillX.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,11 +13,15 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
 
     private final JwtValidator jwtValidator;
+
+    @Value("${cors.allowed-origins}")
+    private String allowedOrigins;
 
     public SecurityConfig(JwtValidator jwtValidator) {
         this.jwtValidator = jwtValidator;
@@ -32,9 +37,9 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/store/create")
-                        .hasAnyRole("STORE_MANAGER", "ADMIN")
-                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/api/store/create").hasAnyRole("STORE_MANAGER", "ADMIN")
+                        .requestMatchers("/api/store/**").hasAnyRole("USER", "STORE_MANAGER", "ADMIN")
+                        .requestMatchers("/api/user/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtValidator, BasicAuthenticationFilter.class)
@@ -46,7 +51,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration cfg = new CorsConfiguration();
-            cfg.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+            cfg.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
             cfg.setAllowedMethods(Collections.singletonList("*"));
             cfg.setAllowedHeaders(Collections.singletonList("*"));
             cfg.setAllowCredentials(true);

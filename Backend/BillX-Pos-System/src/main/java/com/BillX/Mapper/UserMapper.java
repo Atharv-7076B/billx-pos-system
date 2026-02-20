@@ -5,7 +5,6 @@ import com.BillX.Payload.dto.UserDto;
 
 public class UserMapper {
 
-
     public static UserDto toDTO(User user) {
         if (user == null) return null;
 
@@ -18,9 +17,9 @@ public class UserMapper {
         userDto.setUpdatedAt(user.getUpdatedAt());
         userDto.setLastLogin(user.getLastLogin());
         userDto.setPhoneNumber(user.getPhoneNumber());
+
         return userDto;
     }
-
 
     public static User toEntity(UserDto userDto) {
         if (userDto == null) return null;
@@ -29,6 +28,7 @@ public class UserMapper {
         user.setId(userDto.getId());
         user.setFullName(userDto.getFullName());
         user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
         user.setRole(userDto.getRole());
         user.setCreatedAt(userDto.getCreatedAt());
         user.setUpdatedAt(userDto.getUpdatedAt());
