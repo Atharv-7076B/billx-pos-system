@@ -30,41 +30,6 @@ public class AuthServiceImpl implements AuthService {
     private final JwtProvider provider;
     private final CustomUserImplementation customUserImplementation;
 
-//    @Override
-//    public AuthResponse signup(UserDto userDto) throws UserException {
-//
-//        if (repo.findByEmail(userDto.getEmail()) != null) {
-//            throw new UserException("Email already exists");
-//        }
-//
-//        User user = new User();
-//        user.setEmail(userDto.getEmail());
-//        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-//        user.setFullName(userDto.getFullName());
-//        user.setPhoneNumber(userDto.getPhoneNumber());
-//        user.setRole(UserRole.ROLE_USER);
-//        user.setCreatedAt(LocalDateTime.now());
-//        user.setUpdatedAt(LocalDateTime.now());
-//
-//        User savedUser = repo.save(user);
-//
-//        UserDetails userDetails =
-//                customUserImplementation.loadUserByUsername(savedUser.getEmail());
-//
-//        Authentication authentication =
-//                new UsernamePasswordAuthenticationToken(
-//                        userDetails,
-//                        null,
-//                        userDetails.getAuthorities()
-//                );
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        String jwt = provider.generateToken(authentication);
-//
-//        return new AuthResponse(jwt, "Registered Successfully", UserMapper.toDTO(savedUser));
-//    }
-
     @Override
     public AuthResponse signup(UserDto userDto) throws UserException {
 
