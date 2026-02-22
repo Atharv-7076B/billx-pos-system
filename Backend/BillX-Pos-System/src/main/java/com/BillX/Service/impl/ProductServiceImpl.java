@@ -1,38 +1,86 @@
 package com.BillX.Service.impl;
 
+import com.BillX.Mapper.ProductMapper;
+import com.BillX.Model.Product;
+import com.BillX.Model.Store;
 import com.BillX.Model.User;
 import com.BillX.Payload.dto.ProductDto;
+import com.BillX.Repository.ProductRepository;
+import com.BillX.Repository.StoreRepository;
+import com.BillX.Repository.UserRepository;
 import com.BillX.Service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
     @Override
-    public ProductDto createProduct(ProductDto productDto, User user) {
-        return null;
+    public ProductDto createProduct(ProductDto productDto, User user) throws Exception {
+        Store store = storeRepository.findById(productDto.getStoreId()).orElseThrow(
+                ()->new Exception("Store Not Found"));
+        Product product = ProductMapper.toEntity(productDto,store);
+        Product savedproduct = productRepository.save(product);
+        return ProductMapper.toDto(savedproduct);
     }
 
     @Override
-    public ProductDto updateProduct(Long id, ProductDto productDto, User user) {
-        return null;
+    public ProductDto updateProduct(Long id, ProductDto productDto, User user) throws Exception {
+        Product product = productRepository.findById(id).orElseThrow(
+                ()->new Exception("Product Not Found")
+        );
+        productDto.setName(productDto.getName());
+        productDto.setDescription(productDto.getDescription());
+        productDto.setSqu(productDto.getSqu());
+        productDto.setImage(product.getImage());
+        productDto.setMrp(product.getMrp());
+        productDto.setSellingPrice(product.getSellingPrice());
+        productDto.setBrand(product.getBrand());
+        productDto.setUpdatedAt(product.getUpdatedAt());
+        Product updatedProduct = productRepository.save(product);
+        return  ProductMapper.toDto(updatedProduct);
+
     }
 
     @Override
-    public void deleteProduct(Long id, User user) {
-
+    public void deleteProduct(Long id, User user) throws Exception {
+        Product product = productRepository.findById(id).orElseThrow(
+                ()-> new Exception("Product not found")
+        );
+        productRepository.delete(product);
     }
 
     @Override
     public List<ProductDto> getAllProducts(Long storeId) {
-        return List.of();
+        List<Product> products = productRepository.findByStoreId(storeId);
+        return products
+                .stream()
+                .map(ProductMapper::toDto)
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public List<ProductDto> searchByKeyword(Long storeId, String keyword) {
-        return List.of();
+        List<Product> products = productRepository.searchByKeyword(storeId,keyword);
+        return products
+                .stream()
+                .map(ProductMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDto> getProductsById(Long id) throws Exception {
+        List<Product> products = productRepository.findByStoreId(id);
+        return products
+                .stream()
+                .map(ProductMapper ::toDto)
+                .collect(Collectors.toList());
     }
 }

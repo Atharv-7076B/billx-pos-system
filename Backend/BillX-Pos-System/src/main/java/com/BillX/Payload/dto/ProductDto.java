@@ -3,10 +3,12 @@ package com.BillX.Payload.dto;
 import com.BillX.Model.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 @Data
+@Builder
 public class ProductDto {
     private Long id;
 
