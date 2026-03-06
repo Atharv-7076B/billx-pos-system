@@ -72,7 +72,6 @@ public class JwtValidator extends OncePerRequestFilter {
         } catch (ExpiredJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
             SecurityContextHolder.clearContext();
         }
-
         filterChain.doFilter(request, response);
     }
 }
