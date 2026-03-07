@@ -8,6 +8,6 @@ import java.util.List;
 public interface CategoryService {
     CategoryDto createCategory(CategoryDto categoryDto) throws Exception;
     List<CategoryDto> getCategoriesByStore(Long storeId);
-    CategoryDto updateCategory(Long Id ,CategoryDto categoryDto);
-    void deleteCategory(Long Id);
+    CategoryDto updateCategory(Long Id ,CategoryDto categoryDto) throws Exception;
+    void deleteCategory(Long Id) throws Exception;
 }

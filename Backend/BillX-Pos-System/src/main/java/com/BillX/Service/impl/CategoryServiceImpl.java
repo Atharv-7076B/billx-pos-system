@@ -12,11 +12,14 @@ import com.BillX.Repository.StoreRepository;
 import com.BillX.Service.CategoryService;
 import com.BillX.Service.StoreService;
 import com.BillX.Service.UserService;
+import com.BillX.domain.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
@@ -39,16 +42,39 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getCategoriesByStore(Long storeId) {
-        return List.of();
+        List<Category> categories = (List<Category>) categoryRepository.getByStoreId(storeId);
+        return categories.stream()
+                .map(
+                        CategoryMapper::toDto
+                ).collect(Collectors.toList());
     }
 
     @Override
-    public CategoryDto updateCategory(Long Id, CategoryDto categoryDto) {
+    public CategoryDto updateCategory(Long Id, CategoryDto categoryDto) throws Exception {
+        Category category = categoryRepository.findById(Id).orElseThrow(
+                ()-> new Exception("Category Doesn't Exist")
+        );
+        User user = userService.getCurrentUsers();
+        category.setName(categoryDto.getName());
+        categoryRepository.save(category);
+
         return null;
     }
 
     @Override
-    public void deleteCategory(Long Id) {
-
+    public void deleteCategory(Long Id) throws Exception {
+        Category category = categoryRepository.findById(Id).orElseThrow(
+                ()-> new Exception("Category Doesn't Exist")
+        );
+        User user = userService.getCurrentUsers();
+        categoryRepository.delete(category);
+    }
+    private  void checkAuthority(User user,Store store) throws Exception{
+        boolean isAdmin = user.getRole().equals(UserRole.ROLE_ADMIN);
+        boolean isManager = user.getRole().equals(UserRole.ROLE_STORE_MANAGER);
+        boolean isSameStore = user.equals(store.getStoreAdmin());
+        if(!(isAdmin && isSameStore) && !isManager ){
+            throw  new Exception("You don't have access to manage this category");
+        }
     }
 }

@@ -7,9 +7,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Builder
 @Data
+@RequiredArgsConstructor
 public class CategoryDto {
     private Long id;
 
