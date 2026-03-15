@@ -1,5 +1,6 @@
 package com.BillX.Payload.dto;
 
+import com.BillX.Model.Category;
 import com.BillX.Model.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
@@ -21,7 +22,7 @@ public class ProductDto {
     private double sellingPrice;
     private String brand;
     private String image;
-    //private Category category;
+    private CategoryDto category;
     private Long catogoryId;
     private Long storeId;
     private LocalDateTime createdAt;

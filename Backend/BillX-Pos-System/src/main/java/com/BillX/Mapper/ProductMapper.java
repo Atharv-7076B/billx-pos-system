@@ -1,5 +1,6 @@
 package com.BillX.Mapper;
 
+import com.BillX.Model.Category;
 import com.BillX.Model.Product;
 import com.BillX.Model.Store;
 import com.BillX.Payload.dto.ProductDto;
@@ -14,6 +15,7 @@ public class ProductMapper {
                 .mrp(product.getMrp())
                 .sellingPrice(product.getSellingPrice())
                 .brand(product.getBrand())
+                .category(CategoryMapper.toDto(product.getCategory()))
                 .storeId(product.getStore()!=null?product.getStore().getId():null)
                 .image(product.getImage())
                 .createdAt(product.getCreatedAt())
@@ -23,10 +25,12 @@ public class ProductMapper {
         //.catogoryId(product.getId())
 
     }
-    public static Product toEntity(ProductDto productDto, Store store){
+    public static Product toEntity(ProductDto productDto, Store store, Category category){
         return Product.builder()
                 .name(productDto.getName())
                 .squ(productDto.getSqu())
+                .store(store)
+                .category(category)
                 .description(productDto.getDescription())
                 .mrp(productDto.getMrp())
                 .sellingPrice(productDto.getSellingPrice())

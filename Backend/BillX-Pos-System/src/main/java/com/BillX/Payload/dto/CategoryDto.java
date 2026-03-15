@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class CategoryDto {
     private Long id;
 

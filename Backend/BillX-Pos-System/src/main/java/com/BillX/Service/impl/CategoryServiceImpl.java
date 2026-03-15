@@ -26,23 +26,41 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final UserService userService;
     private final StoreRepository storeRepository;
+
     @Override
     public CategoryDto createCategory(CategoryDto categoryDto) throws Exception {
+
         User user = userService.getCurrentUsers();
-        Store store = storeRepository.findById(categoryDto.getId()).orElseThrow(
-                ()-> new Exception("Store Not Found")
-        );
-        Category category =Category.builder()
+
+        Store store = storeRepository.findById(categoryDto.getStoreId())
+                .orElseThrow(() -> new Exception("Store Not Found"));
+
+        Category category = Category.builder()
                 .store(store)
                 .name(categoryDto.getName())
                 .build();
 
-        return CategoryMapper.toDto(category);
+        checkAuthority(user, category.getStore());
+
+        return CategoryMapper.toDto(categoryRepository.save(category));
     }
+//    public CategoryDto createCategory(CategoryDto categoryDto) throws Exception {
+//        User user = userService.getCurrentUsers();
+//        Store store = storeRepository.findById(categoryDto.getId()).orElseThrow(
+//                ()-> new Exception("Store Not Found")
+//        );
+//        Category category =Category.builder()
+//                .store(store)
+//                .name(categoryDto.getName())
+//                .build();
+//        checkAuthority(user,category.getStore());
+//
+//        return CategoryMapper.toDto(categoryRepository.save(category));
+//    }
 
     @Override
     public List<CategoryDto> getCategoriesByStore(Long storeId) {
-        List<Category> categories = (List<Category>) categoryRepository.getByStoreId(storeId);
+        List<Category> categories = (List<Category>) categoryRepository.findByStoreId(storeId);
         return categories.stream()
                 .map(
                         CategoryMapper::toDto
@@ -56,9 +74,10 @@ public class CategoryServiceImpl implements CategoryService {
         );
         User user = userService.getCurrentUsers();
         category.setName(categoryDto.getName());
+        checkAuthority(user,category.getStore());
         categoryRepository.save(category);
 
-        return null;
+        return CategoryMapper.toDto(categoryRepository.save(category));
     }
 
     @Override
@@ -67,6 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
                 ()-> new Exception("Category Doesn't Exist")
         );
         User user = userService.getCurrentUsers();
+        checkAuthority(user,category.getStore());
         categoryRepository.delete(category);
     }
     private  void checkAuthority(User user,Store store) throws Exception{
