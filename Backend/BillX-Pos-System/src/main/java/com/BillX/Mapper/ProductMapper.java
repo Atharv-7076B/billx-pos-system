@@ -4,7 +4,9 @@ import com.BillX.Model.Category;
 import com.BillX.Model.Product;
 import com.BillX.Model.Store;
 import com.BillX.Payload.dto.ProductDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductMapper {
     public static ProductDto toDto(Product product){
         return ProductDto.builder()

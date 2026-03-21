@@ -2,7 +2,9 @@ package com.BillX.Mapper;
 
 import com.BillX.Model.User;
 import com.BillX.Payload.dto.UserDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper {
 
     public static UserDto toDTO(User user) {
