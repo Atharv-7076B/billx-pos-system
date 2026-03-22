@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface ProductService {
-    ProductDto createProduct(ProductDto productDto, User user) throws Exception;
+    ProductDto createProduct(ProductDto productDto, Long storeId, Long categoryId) throws Exception;
     ProductDto updateProduct(Long id,ProductDto productDto,User user) throws Exception;
     void deleteProduct(Long id,User user) throws Exception;
     List<ProductDto> getAllProducts(Long storeId);

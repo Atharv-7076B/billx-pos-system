@@ -15,7 +15,7 @@ public class ProductDto {
 
     private String name;
 
-    private String squ;
+    private String sku;
 
     private String description;
     private double mrp;
@@ -23,7 +23,7 @@ public class ProductDto {
     private String brand;
     private String image;
     private CategoryDto category;
-    private Long catogoryId;
+    private Long categoryId;
     private Long storeId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

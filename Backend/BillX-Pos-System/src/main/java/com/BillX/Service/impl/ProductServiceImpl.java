@@ -25,40 +25,68 @@ public class ProductServiceImpl implements ProductService {
     private final StoreRepository storeRepository;
     private final CategoryRepository categoryRepository;
     @Override
-    public ProductDto createProduct(ProductDto productDto, User user) throws Exception {
-        Store store = storeRepository.findById(productDto.getStoreId()).orElseThrow(
-                ()->new Exception("Store Not Found"));
-        Category category = categoryRepository.findById(productDto.getId()).orElseThrow(
-                ()->new Exception("Category Not Found")
-        );
-        Product product = ProductMapper.toEntity(productDto,store,category);
-        Product savedproduct = productRepository.save(product);
-        return ProductMapper.toDto(savedproduct);
+    public ProductDto createProduct(ProductDto productDto, Long storeId, Long categoryId) throws Exception {
+
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new Exception("Store Not Found"));
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new Exception("Category Not Found"));
+
+        Product product = ProductMapper.toEntity(productDto, store, category);
+
+        Product savedProduct = productRepository.save(product);
+
+        return ProductMapper.toDto(savedProduct);
     }
 
     @Override
     public ProductDto updateProduct(Long id, ProductDto productDto, User user) throws Exception {
-        Product product = productRepository.findById(id).orElseThrow(
-                ()->new Exception("Product Not Found")
-        );
-        productDto.setName(productDto.getName());
-        productDto.setDescription(productDto.getDescription());
-        productDto.setSqu(productDto.getSqu());
-        productDto.setImage(product.getImage());
-        productDto.setMrp(product.getMrp());
-        productDto.setSellingPrice(product.getSellingPrice());
-        productDto.setBrand(product.getBrand());
-        productDto.setUpdatedAt(product.getUpdatedAt());
-        if(productDto.getCatogoryId() != null){
-            Category category = categoryRepository.findById(productDto.getCatogoryId()).orElseThrow(
-                    ()->new Exception("Category Not Found")
-            );
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new Exception("Product Not Found"));
+
+        product.setName(productDto.getName());
+        product.setDescription(productDto.getDescription());
+        product.setSku(productDto.getSku());
+        product.setImage(productDto.getImage());
+        product.setMrp(productDto.getMrp());
+        product.setSellingPrice(productDto.getSellingPrice());
+        product.setBrand(productDto.getBrand());
+
+        if (productDto.getCategoryId() != null) {
+            Category category = categoryRepository.findById(productDto.getCategoryId())
+                    .orElseThrow(() -> new Exception("Category Not Found"));
             product.setCategory(category);
         }
-        Product updatedProduct = productRepository.save(product);
-        return  ProductMapper.toDto(updatedProduct);
 
+        Product updatedProduct = productRepository.save(product);
+
+        return ProductMapper.toDto(updatedProduct);
     }
+//    @Override
+//    public ProductDto updateProduct(Long id, ProductDto productDto, User user) throws Exception {
+//        Product product = productRepository.findById(id).orElseThrow(
+//                ()->new Exception("Product Not Found")
+//        );
+//        productDto.setName(productDto.getName());
+//        productDto.setDescription(productDto.getDescription());
+//        productDto.setSku(productDto.getSku());
+//        productDto.setImage(product.getImage());
+//        productDto.setMrp(product.getMrp());
+//        productDto.setSellingPrice(product.getSellingPrice());
+//        productDto.setBrand(product.getBrand());
+//        productDto.setUpdatedAt(product.getUpdatedAt());
+//        if(productDto.getCatogoryId() != null){
+//            Category category = categoryRepository.findById(productDto.getCatogoryId()).orElseThrow(
+//                    ()->new Exception("Category Not Found")
+//            );
+//            product.setCategory(category);
+//        }
+//        Product updatedProduct = productRepository.save(product);
+//        return  ProductMapper.toDto(updatedProduct);
+//
+//    }
 
     @Override
     public void deleteProduct(Long id, User user) throws Exception {

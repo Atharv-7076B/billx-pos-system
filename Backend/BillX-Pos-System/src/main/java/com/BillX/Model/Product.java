@@ -18,8 +18,8 @@ public class Product {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false,unique = true)
-    private String squ;
+    @Column(name = "sku", nullable = false, unique = true)
+    private String sku;
 
     private String description;
     private double mrp;

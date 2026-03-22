@@ -20,15 +20,16 @@ public class ProductController {
     private final UserService userService;
 
 
-    @PostMapping("/create")
-    public ResponseEntity<ProductDto> create(@RequestBody ProductDto productDto,
-                                             @RequestHeader("Authorization") String jwt) throws Exception {
-        User user = userService.getUserFromJwt(jwt);
+    @PostMapping("/store/{storeId}/category/{categoryId}")
+    public ResponseEntity<ProductDto> createProduct(
+            @PathVariable Long storeId,
+            @PathVariable Long categoryId,
+            @RequestBody ProductDto dto) throws Exception {
+
         return ResponseEntity.ok(
-                productService.createProduct(productDto,user)
+                productService.createProduct(dto, storeId, categoryId)
         );
     }
-
     @GetMapping("/store/{storeId}")
     public ResponseEntity<List<ProductDto>> getByStoreId(@PathVariable Long storeId,
                                                          @RequestHeader("Authorization") String jwt) throws Exception {
