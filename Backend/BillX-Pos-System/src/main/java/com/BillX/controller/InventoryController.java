@@ -49,5 +49,4 @@ public class InventoryController {
         List<InventoryDto> inventories = inventoryService.getAllInventoryByBranchId(branchId);
         return ResponseEntity.ok(inventories);
     }
-
 }

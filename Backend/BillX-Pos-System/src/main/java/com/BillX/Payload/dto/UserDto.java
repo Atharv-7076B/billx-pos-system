@@ -18,6 +18,8 @@ public class UserDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    private Long branchId;
+    private Long storeId;
     private String phoneNumber;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
