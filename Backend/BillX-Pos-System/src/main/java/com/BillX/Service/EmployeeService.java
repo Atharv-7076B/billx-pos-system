@@ -9,8 +9,8 @@ import java.util.List;
 public interface EmployeeService {
     UserDto createStoreEmployee(UserDto employee,Long storeId)throws Exception;
     UserDto createBranchEmployee(UserDto employee,Long branchId) throws  Exception;
-    User updateEmployee(UserDto employee,User employeeDetails);
-    void deleteEmployee(Long employeeId);
-    List<User> findStoreEmployee(Long storeId, UserRole role);
-    List<User> findBranchEmployee(Long branchId, UserRole role);
+    User updateEmployee(Long employeeId,UserDto employeeDetails) throws Exception;
+    void deleteEmployee(Long employeeId) throws Exception;
+    List<User> findStoreEmployee(Long storeId, UserRole role) throws Exception;
+    List<User> findBranchEmployee(Long branchId, UserRole role) throws Exception;
 }

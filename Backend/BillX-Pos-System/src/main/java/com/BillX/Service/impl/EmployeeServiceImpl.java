@@ -11,10 +11,13 @@ import com.BillX.Repository.UserRepository;
 import com.BillX.Service.EmployeeService;
 import com.BillX.domain.UserRole;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -57,29 +60,56 @@ public class EmployeeServiceImpl implements EmployeeService {
         );
         if(employee.getRole()!=UserRole.ROLE_BRANCH_CASHIER ||
         employee.getRole()!=UserRole.ROLE_BRANCH_MANAGER){
-
+            User user = userMapper.toEntity(employee);
+            user.setBranch(branch);
+            user.setPassword(passwordEncoder.encode(employee.getPassword()));
+            return UserMapper.toDTO(userRepository.save(user));
         }
-
-        return null;
+        throw new Exception("Branch Role Not supported");
     }
 
     @Override
-    public User updateEmployee(UserDto employee, User employeeDetails) {
-        return null;
+    public User updateEmployee(Long employeeId, UserDto employeeDetails) throws Exception {
+        User existingEmployee = userRepository.findById(employeeId).orElseThrow(
+                ()->new ExecutionException("Employee Not Exists")
+        );
+        Branch branch = branchRepository.findById(employeeDetails.getBranchId()).orElseThrow(
+                ()->new Exception("Branch Not Found")
+        );
+        existingEmployee.setBranch(branch);
+        existingEmployee.setPassword(employeeDetails.getPassword());
+        existingEmployee.setRole(employeeDetails.getRole());
+        existingEmployee.setEmail(employeeDetails.getEmail());
+        existingEmployee.setFullName(employeeDetails.getFullName());
+
+        return userRepository.save(existingEmployee);
     }
 
     @Override
-    public void deleteEmployee(Long employeeId) {
-
+    public void deleteEmployee(Long employeeId) throws Exception {
+        User employee = userRepository.findById(employeeId).orElseThrow(
+                ()-> new Exception("Employee Not Exists")
+        );
+        userRepository.delete(employee);
     }
 
     @Override
-    public List<User> findStoreEmployee(Long storeId, UserRole role) {
-        return List.of();
+    public List<User> findStoreEmployee(Long storeId, UserRole role) throws Exception {
+        Store store = storeRepository.findById(storeId).orElseThrow(
+                ()->new Exception("Store Not found")
+        );
+        return userRepository.findByStore(store);
     }
 
     @Override
-    public List<User> findBranchEmployee(Long branchId, UserRole role) {
-        return List.of();
+    public List<User> findBranchEmployee(Long branchId, UserRole role) throws Exception {
+        Branch branch = branchRepository.findById(branchId).orElseThrow(
+                ()->new Exception("Branch Not Found")
+        );
+        List<User> employees = userRepository.findByBranch(branch)
+                .stream().filter(
+                        user -> role == null || user.getRole() == role
+                ).collect(Collectors.toList());
+        return employees;
     }
 }
