@@ -1,0 +1,333 @@
+You are a Senior Full Stack Architect and Java Spring Boot + React expert.
+
+I have uploaded the complete source code of my BillX POS System backend. Your job is NOT to assume anything. First, inspect and understand the existing codebase completely before making any changes.
+
+# Phase 1 – Backend Audit
+
+Analyze the entire backend project including:
+
+* Controllers
+* Services
+* Repositories
+* Entities
+* DTOs
+* Security configuration
+* JWT Authentication
+* Validation
+* Exception handling
+* Database relationships
+* Configuration
+* Razorpay integration
+* Mail configuration
+* Utility classes
+* Application properties
+
+Prepare a report that includes:
+
+1. Existing project architecture
+2. Missing features
+3. Missing endpoints
+4. Code smells
+5. Security issues
+6. Performance improvements
+7. Validation improvements
+8. Database improvements
+9. Production readiness checklist
+
+Do not modify anything until the analysis is complete.
+
+---
+
+# Phase 2 – Complete the Backend
+
+Improve the backend while preserving the existing architecture and API contracts whenever possible.
+
+Complete any missing functionality including:
+
+## Authentication
+
+* Login
+* Logout
+* Refresh Token (if missing)
+* Forgot Password
+* Reset Password
+* Change Password
+* Email Verification (if applicable)
+* Role-Based Authorization
+
+## Product Management
+
+* CRUD
+* Search
+* Pagination
+* Sorting
+* Filters
+* Barcode support
+* SKU generation
+* Product images (if applicable)
+
+## Category Management
+
+* CRUD
+* Validation
+* Soft delete if appropriate
+
+## Inventory
+
+* Stock In
+* Stock Out
+* Stock Adjustment
+* Low Stock Alerts
+* Inventory History
+
+## Billing / POS
+
+* Cart
+* Invoice Generation
+* Multiple Payment Methods
+* Discount
+* Tax
+* Receipt Generation
+* Order Completion
+
+## Sales
+
+* Sales History
+* Invoice Details
+* Refund Support (if applicable)
+
+## Customers
+
+* CRUD
+* Purchase History
+
+## Employees
+
+* CRUD
+* Roles
+* Permissions
+
+## Branches
+
+* CRUD
+
+## Stores
+
+* CRUD
+
+## Users
+
+* CRUD
+* Roles
+* Permissions
+
+## Reports
+
+* Daily Sales
+* Monthly Sales
+* Product Sales
+* Inventory Reports
+
+---
+
+Improve the backend by adding:
+
+* Global Exception Handler
+* Standard API Response Wrapper
+* Proper HTTP Status Codes
+* DTO Validation
+* Bean Validation
+* Logging
+* Clean Service Layer
+* Better Error Messages
+* Transactions where needed
+* Pagination
+* Search APIs
+* Filtering APIs
+
+Use best practices for:
+
+* Spring Boot 3
+* Java 21
+* Spring Security
+* JWT
+* JPA
+* Hibernate
+* MySQL
+
+Do not remove existing working functionality.
+
+Only improve what is missing.
+
+---
+
+# Phase 3 – API Documentation
+
+Generate complete API documentation including:
+
+* Endpoint
+* HTTP Method
+* Request Body
+* Response Body
+* Authentication
+* Validation Rules
+* Example Requests
+* Example Responses
+* Error Responses
+
+If Swagger/OpenAPI is not configured, configure it.
+
+---
+
+# Phase 4 – Build the Frontend
+
+After the backend is complete, build a modern production-ready frontend.
+
+Technology Stack:
+
+* React 19
+* Vite
+* TypeScript
+* Tailwind CSS
+* React Router
+* Axios
+* TanStack Query
+* React Hook Form
+* Zod
+* Context API (or Zustand if more appropriate)
+* React Hot Toast
+* Recharts for analytics
+
+Folder Structure:
+
+src/
+├── api
+├── assets
+├── components
+├── context
+├── hooks
+├── layouts
+├── pages
+├── routes
+├── services
+├── store
+├── types
+├── utils
+└── styles
+
+---
+
+Create pages for:
+
+* Login
+* Dashboard
+* Products
+* Categories
+* Inventory
+* Billing / POS
+* Orders
+* Sales History
+* Customers
+* Employees
+* Branches
+* Stores
+* Users
+* Reports
+* Profile
+* Settings
+* 404 Page
+
+---
+
+Dashboard should include:
+
+* Total Sales
+* Today's Sales
+* Monthly Sales
+* Total Products
+* Total Customers
+* Total Orders
+* Low Stock Items
+* Charts
+* Recent Transactions
+
+---
+
+Billing Screen should include:
+
+* Product Search
+* Barcode Scanner Support
+* Shopping Cart
+* Quantity Controls
+* Discounts
+* Tax
+* Payment Options
+* Razorpay Integration
+* Invoice Preview
+* Print Receipt
+
+---
+
+Tables should support:
+
+* Pagination
+* Search
+* Sorting
+* Filtering
+* Export
+* Responsive Layout
+
+---
+
+Forms should include:
+
+* Client-side validation
+* Server-side validation
+* Loading states
+* Error messages
+* Success notifications
+
+---
+
+Authentication
+
+Implement:
+
+* JWT Login
+* Protected Routes
+* Auto Logout
+* Token Storage
+* Refresh Authentication State
+
+---
+
+UI Design
+
+Design a premium, modern POS interface inspired by Square POS, Shopify POS, and Lightspeed.
+
+Requirements:
+
+* Responsive
+* Clean
+* Professional
+* Card-based dashboard
+* Sidebar
+* Navbar
+* Breadcrumbs
+* Light/Dark Mode
+* Smooth animations
+* Consistent spacing
+* Accessible UI
+
+---
+
+# Critical Rules
+
+* Analyze before coding.
+* Never invent backend APIs if they do not exist.
+* Reuse existing APIs whenever possible.
+* If an API is missing, implement it in the backend first.
+* Keep the project modular and maintainable.
+* Write production-quality code.
+* Explain every major change before applying it.
+* Complete one module at a time and verify it before moving to the next.
