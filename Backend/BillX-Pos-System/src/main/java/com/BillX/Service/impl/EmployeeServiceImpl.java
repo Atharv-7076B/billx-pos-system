@@ -98,7 +98,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         Store store = storeRepository.findById(storeId).orElseThrow(
                 ()->new Exception("Store Not found")
         );
-        return userRepository.findByStore(store);
+        return userRepository.findByStore(store)
+                .stream().filter(
+                        user->role==null|| user.getRole()==role
+                ).collect(Collectors.toList());
     }
 
     @Override
