@@ -3,7 +3,6 @@ package com.BillX.Service.impl;
 import com.BillX.Exception.UserException;
 import com.BillX.Mapper.OrderMapper;
 import com.BillX.Model.Customer;
-import com.BillX.Model.SaleOrder;
 import com.BillX.Model.Store;
 import com.BillX.Payload.dto.CustomerDto;
 import com.BillX.Payload.dto.OrderDto;
@@ -14,9 +13,9 @@ import com.BillX.Service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor

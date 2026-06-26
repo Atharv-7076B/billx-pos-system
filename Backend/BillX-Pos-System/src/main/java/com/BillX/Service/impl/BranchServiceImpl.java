@@ -8,16 +8,14 @@ import com.BillX.Model.User;
 import com.BillX.Payload.dto.BranchDto;
 import com.BillX.Repository.BranchRepository;
 import com.BillX.Repository.StoreRepository;
-import com.BillX.Repository.UserRepository;
 import com.BillX.Service.BranchService;
 import com.BillX.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor

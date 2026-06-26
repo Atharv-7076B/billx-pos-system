@@ -4,6 +4,8 @@ import com.BillX.Service.AuthService;
 import com.BillX.configuration.SecurityConfig;
 import com.BillX.Payload.dto.UserDto;
 import com.BillX.Payload.response.AuthResponse;
+import com.BillX.configuration.SecurityBeansConfig;
+import com.BillX.configuration.JwtValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, SecurityBeansConfig.class, JwtValidator.class})
 public class AuthControllerTest {
 
     @Autowired
@@ -33,7 +35,7 @@ public class AuthControllerTest {
 
         mockMvc.perform(post("/auth/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"test@example.com\", \"password\":\"password\", \"fullName\":\"Test User\", \"role\":\"ROLE_CUSTOMER\"}"))
+                .content("{\"email\":\"test@example.com\", \"password\":\"password\", \"fullName\":\"Test User\", \"role\":\"ROLE_USER\"}"))
                 .andExpect(status().isOk());
     }
     

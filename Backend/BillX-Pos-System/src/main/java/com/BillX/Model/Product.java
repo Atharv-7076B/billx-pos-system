@@ -1,10 +1,9 @@
 package com.BillX.Model;
 
-import com.BillX.domain.StoreStatus;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
+
 
 @Entity
 @Getter

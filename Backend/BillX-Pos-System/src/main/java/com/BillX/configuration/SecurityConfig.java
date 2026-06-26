@@ -1,5 +1,6 @@
 package com.BillX.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +11,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +19,9 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtValidator jwtValidator;
+
+    @Value("${cors.allowed-origins:http://localhost:5173,http://localhost:3000}")
+    private String allowedOrigins;
 
     public SecurityConfig(JwtValidator jwtValidator) {
         this.jwtValidator = jwtValidator;
@@ -49,7 +54,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration cfg = new CorsConfiguration();
-            cfg.setAllowedOriginPatterns(List.of("*"));
+            cfg.setAllowedOriginPatterns(Arrays.asList(allowedOrigins.split(",")));
             cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
             cfg.setAllowedHeaders(Collections.singletonList("*"));
             cfg.setAllowCredentials(false);

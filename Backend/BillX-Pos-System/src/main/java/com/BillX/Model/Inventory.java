@@ -1,10 +1,9 @@
 package com.BillX.Model;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
+
 
 @Entity
 @Getter

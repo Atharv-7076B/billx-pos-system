@@ -1,10 +1,9 @@
 package com.BillX.Service;
 
-import com.BillX.Payload.dto.OrderDto;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
 
 public interface ReportService {
     Map<String, Object> getDailySalesReport(Long storeId, LocalDate date);

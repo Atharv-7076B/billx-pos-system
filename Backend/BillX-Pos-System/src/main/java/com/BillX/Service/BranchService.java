@@ -1,11 +1,10 @@
 package com.BillX.Service;
 
 import com.BillX.Exception.UserException;
-import com.BillX.Model.Branch;
 import com.BillX.Model.User;
 import com.BillX.Payload.dto.BranchDto;
-
 import java.util.List;
+
 
 public interface BranchService {
     BranchDto createBranch(BranchDto branchDto,User user) throws UserException;

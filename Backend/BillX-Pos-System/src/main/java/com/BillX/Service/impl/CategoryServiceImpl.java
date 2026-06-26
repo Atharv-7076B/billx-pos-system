@@ -1,24 +1,20 @@
 package com.BillX.Service.impl;
 
-import com.BillX.Exception.UserException;
 import com.BillX.Mapper.CategoryMapper;
 import com.BillX.Model.Category;
 import com.BillX.Model.Store;
 import com.BillX.Model.User;
 import com.BillX.Payload.dto.CategoryDto;
-import com.BillX.Payload.dto.StoreDto;
 import com.BillX.Repository.CategoryRepository;
 import com.BillX.Repository.StoreRepository;
 import com.BillX.Service.CategoryService;
-import com.BillX.Service.StoreService;
 import com.BillX.Service.UserService;
 import com.BillX.domain.UserRole;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor

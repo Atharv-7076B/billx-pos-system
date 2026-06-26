@@ -1,18 +1,17 @@
 package com.BillX.Service.impl;
 
 import com.BillX.Model.Inventory;
-import com.BillX.Payload.dto.OrderDto;
 import com.BillX.Repository.*;
 import com.BillX.Service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor

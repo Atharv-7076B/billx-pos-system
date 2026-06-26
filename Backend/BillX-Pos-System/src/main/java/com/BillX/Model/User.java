@@ -3,10 +3,9 @@ package com.BillX.Model;
 import com.BillX.domain.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
 import java.time.LocalDateTime;
+
 
 @Entity
 @Getter

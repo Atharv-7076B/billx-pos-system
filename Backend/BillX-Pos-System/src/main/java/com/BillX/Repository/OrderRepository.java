@@ -1,16 +1,15 @@
 package com.BillX.Repository;
 
 import com.BillX.Model.SaleOrder;
-import com.BillX.domain.OrderStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 
 public interface OrderRepository extends JpaRepository<SaleOrder, Long> {
     Optional<SaleOrder> findByOrderNumber(String orderNumber);
