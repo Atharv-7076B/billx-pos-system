@@ -1,7 +1,9 @@
-﻿# ===== Backend =====
+﻿# ===== IntelliJ =====
+.idea/
+*.iml
+
+# ===== Backend =====
 Backend/**/target/
-Backend/**/.idea/
-Backend/**/*.iml
 
 # ===== Frontend =====
 Frontend/node_modules/
