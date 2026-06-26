@@ -1,0 +1,2 @@
+- [BillX Stack Setup](billx-stack.md) — Spring Boot 8080 (console) + Vite React 5000 (webview); Node.js 20 installed via installLanguagePackages.
+- [BillX Backend Quirks](billx-backend-quirks.md) — SaleOrder entity (not "Order"); base package com.BillX; JWT in header; CORS allowCredentials=false with wildcard.

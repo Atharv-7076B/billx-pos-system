@@ -1,6 +1,5 @@
 package com.BillX.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,7 +10,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,27 +18,27 @@ public class SecurityConfig {
 
     private final JwtValidator jwtValidator;
 
-    @Value("${cors.allowed-origins}")
-    private String allowedOrigins;
-
     public SecurityConfig(JwtValidator jwtValidator) {
         this.jwtValidator = jwtValidator;
     }
 
+    private static final String[] PUBLIC_PATHS = {
+        "/auth/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/v3/api-docs/**",
+        "/swagger-resources/**",
+        "/webjars/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/store/create").hasAnyRole("STORE_MANAGER", "ADMIN")
-                        .requestMatchers("/api/store/**").hasAnyRole("USER", "STORE_MANAGER", "ADMIN")
-                        .requestMatchers("/api/user/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers(PUBLIC_PATHS).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtValidator, BasicAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -51,12 +49,12 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration cfg = new CorsConfiguration();
-            cfg.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
-            cfg.setAllowedMethods(Collections.singletonList("*"));
+            cfg.setAllowedOriginPatterns(List.of("*"));
+            cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
             cfg.setAllowedHeaders(Collections.singletonList("*"));
-            cfg.setAllowCredentials(true);
+            cfg.setAllowCredentials(false);
             cfg.setMaxAge(3600L);
-            cfg.setExposedHeaders(Collections.singletonList("*"));
+            cfg.setExposedHeaders(List.of("Authorization"));
             return cfg;
         };
     }
