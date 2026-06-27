@@ -31,6 +31,11 @@ public class StoreController {
         return ResponseEntity.ok(storeService.getAllStores());
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<StoreDto>> getAllStoresAlias() {
+        return ResponseEntity.ok(storeService.getAllStores());
+    }
+
     @GetMapping("/admin")
     public ResponseEntity<StoreDto> getStoreByAdmin()
             throws UserException {

@@ -56,6 +56,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @Transactional
     public List<StoreDto> getAllStores() {
         return storeRepository.findAll()
                 .stream()
