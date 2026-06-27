@@ -1,5 +1,6 @@
 package com.BillX.Service.impl;
 
+import com.BillX.Exception.EmailAlreadyExistsException;
 import com.BillX.Exception.UserException;
 import com.BillX.Mapper.UserMapper;
 import com.BillX.Model.User;
@@ -34,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse signup(UserDto userDto) throws UserException {
 
         if (repo.findByEmail(userDto.getEmail()) != null) {
-            throw new UserException("Email already exists");
+            throw new EmailAlreadyExistsException("Email already exists");
         }
 
         User user = new User();
@@ -42,44 +43,19 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setFullName(userDto.getFullName());
         user.setPhoneNumber(userDto.getPhoneNumber());
-
-        if (userDto.getRole() == UserRole.ROLE_ADMIN) {
-            throw new UserException("You cannot register as ADMIN");
-        }
-
-        if (userDto.getRole() != null) {
-            user.setRole(userDto.getRole());
-        } else {
-            user.setRole(UserRole.ROLE_USER);
-        }
-
+        user.setRole(UserRole.ROLE_USER);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
 
         User savedUser = repo.save(user);
 
-        UserDetails userDetails =
-                customUserImplementation.loadUserByUsername(savedUser.getEmail());
-
-        Authentication authentication =
-                new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = provider.generateToken(authentication);
-
-        return new AuthResponse(jwt, "Registered Successfully", UserMapper.toDTO(savedUser));
+        return new AuthResponse(null, "Registered Successfully", UserMapper.toDTO(savedUser));
     }
 
     @Override
     public AuthResponse login(UserDto userDto) throws UserException {
 
-        Authentication authentication =
-                authenticate(userDto.getEmail(), userDto.getPassword());
+        Authentication authentication = authenticate(userDto.getEmail(), userDto.getPassword());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -99,8 +75,7 @@ public class AuthServiceImpl implements AuthService {
 
     private Authentication authenticate(String email, String password) throws UserException {
 
-        UserDetails userDetails =
-                customUserImplementation.loadUserByUsername(email);
+        UserDetails userDetails = customUserImplementation.loadUserByUsername(email);
 
         if (userDetails == null) {
             throw new UserException("Email not found");
@@ -113,7 +88,6 @@ public class AuthServiceImpl implements AuthService {
         return new UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,
-                userDetails.getAuthorities()
-        );
+                userDetails.getAuthorities());
     }
 }

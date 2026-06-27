@@ -1,5 +1,6 @@
 package com.BillX.Exception;
 
+import com.BillX.Exception.UserException;
 import com.BillX.Payload.response.StandardResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,11 @@ import java.util.Map;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<StandardResponse<Void>> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(StandardResponse.error(ex.getMessage()));
+    }
 
     @ExceptionHandler(UserException.class)
     public ResponseEntity<StandardResponse<Void>> handleUserException(UserException ex) {

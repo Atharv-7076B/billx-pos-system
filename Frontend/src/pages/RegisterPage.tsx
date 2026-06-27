@@ -2,21 +2,27 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Zap, Eye, EyeOff, Loader2 } from "lucide-react";
 import { authService } from "../services/authService";
-import { useAuth } from "../context/AuthContext";
 
-const schema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(1, "Password is required"),
-});
+const schema = z
+  .object({
+    name: z.string().min(1, "Full name is required"),
+    email: z.string().email("Invalid email"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(1, "Confirm password is required"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"],
+  });
+
 type FormData = z.infer<typeof schema>;
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [showPw, setShowPw] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -28,22 +34,30 @@ export default function LoginPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const res = await authService.login(data);
-      login(res);
-      toast.success(`Welcome back, ${res.userDto.fullName}!`);
-      navigate("/");
+      await authService.signup({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+      toast.success("Registration successful. Please sign in.");
+      navigate("/login");
     } catch (err: any) {
-      const msg = err.response?.data?.message ?? "Login failed";
-      toast.error(msg);
+      const response = err.response?.data;
+      const message = response?.message || "Registration failed";
+      if (response?.errors && typeof response.errors === "object") {
+        Object.values(response.errors).forEach((value: any) => {
+          if (value) toast.error(String(value));
+        });
+      } else {
+        toast.error(message);
+      }
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-primary-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Card */}
         <div className="bg-white rounded-2xl shadow-2xl p-8">
-          {/* Logo */}
           <div className="flex items-center gap-3 mb-8">
             <div className="w-11 h-11 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-200">
               <Zap className="w-6 h-6 text-white" />
@@ -59,13 +73,30 @@ export default function LoginPage() {
           </div>
 
           <h2 className="text-xl font-semibold text-gray-800 mb-1">
-            Sign in to your account
+            Create your account
           </h2>
           <p className="text-sm text-gray-500 mb-6">
-            Enter your credentials to continue
+            Use your email to register and start managing your store.
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Full Name
+              </label>
+              <input
+                {...register("name")}
+                type="text"
+                placeholder="Jane Doe"
+                className={`input ${errors.name ? "border-red-400 focus:ring-red-400" : ""}`}
+              />
+              {errors.name && (
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.name.message}
+                </p>
+              )}
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Email address
@@ -109,6 +140,23 @@ export default function LoginPage() {
               )}
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Confirm Password
+              </label>
+              <input
+                {...register("confirmPassword")}
+                type={showPw ? "text" : "password"}
+                placeholder="••••••••"
+                className={`input ${errors.confirmPassword ? "border-red-400 focus:ring-red-400" : ""}`}
+              />
+              {errors.confirmPassword && (
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
             <button
               type="submit"
               disabled={isSubmitting}
@@ -116,22 +164,22 @@ export default function LoginPage() {
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 size={16} className="animate-spin" /> Signing in…
+                  <Loader2 size={16} className="animate-spin" /> Registering…
                 </>
               ) : (
-                "Sign in"
+                "Register"
               )}
             </button>
           </form>
 
           <p className="text-center text-sm text-gray-500 mt-6">
-            Don't have an account?{" "}
-            <a
-              href="/register"
+            Already have an account?{" "}
+            <Link
               className="text-primary-600 font-semibold hover:underline"
+              to="/login"
             >
-              Register
-            </a>
+              Login
+            </Link>
           </p>
 
           <p className="text-center text-xs text-gray-400 mt-6">
